@@ -1,0 +1,23 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.glisco.hodgepodge.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "IngredientAccessor",
+    "IngredientAccessor$StackEntryAccessor",
+    "IngredientAccessor$TagEntryAccessor",
+    "RecipeManagerAccessor",
+    "RecipeManagerMixin",
+    "recipe_accessors.AbstractCookingRecipeMixin",
+    "recipe_accessors.CuttingRecipeMixin",
+    "recipe_accessors.ShapedRecipeMixin",
+    "recipe_accessors.ShapelessRecipeMixin",
+    "recipe_accessors.SmithingRecipeAccessor"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

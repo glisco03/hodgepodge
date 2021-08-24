@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "patch": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The literal id of the recipe or a regex prefixed with '!' to match"
+          },
+          "predicate": {
+            "type": ["object", "array", "string"],
+            "properties": {
+              "type": {
+                "type": "string"
+              }
+            }
+          },
+          "remap": {
+            "type": "object"
+          },
+          "set_output": {
+            "type": "string",
+            "description": "Replace the recipe's output"
+          },
+          "set_output_count": {
+            "type": "integer",
+            "description": "Modify the count of the recipe's existing output"
+          }
+        },
+        "required": [
+          "predicate"
+        ]
+      }
+    },
+    "remove": {
+      "type": "array",
+      "items": {
+        "type": [
+          "string",
+          "object"
+        ]
+      }
+    }
+  }
+}

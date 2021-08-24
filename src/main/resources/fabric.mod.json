@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "id": "hodgepodge",
+  "version": "${version}",
+  "name": "Hodgepodge",
+  "description": "",
+  "authors": [
+    "glisco"
+  ],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/hodgepodge/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "com.glisco.hodgepodge.client.HodgepodgeClient"
+    ],
+    "main": [
+      "com.glisco.hodgepodge.Hodgepodge"
+    ],
+    "hodgepodge_plugin": [
+      "com.glisco.hodgepodge.compat.ConjuringManipulators"
+    ]
+  },
+  "mixins": [
+    "hodgepodge.mixins.json"
+  ],
+  "accessWidener": "hodgepodge.accesswidener",
+  "depends": {
+    "fabricloader": ">=0.11.6",
+    "fabric": "*",
+    "minecraft": "1.17.1"
+  }
+}

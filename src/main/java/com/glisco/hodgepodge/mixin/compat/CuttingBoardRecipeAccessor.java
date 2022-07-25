@@ -1,5 +1,6 @@
 package com.glisco.hodgepodge.mixin.compat;
 
+import com.glisco.hodgepodge.CompatMixin;
 import com.nhoryzon.mc.farmersdelight.recipe.CuttingBoardRecipe;
 import net.minecraft.recipe.Ingredient;
 import org.spongepowered.asm.mixin.Mixin;
@@ -8,6 +9,7 @@ import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Pseudo
+@CompatMixin(modid = "farmersdelight")
 @Mixin(value = CuttingBoardRecipe.class, remap = false)
 public interface CuttingBoardRecipeAccessor {
 

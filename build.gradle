@@ -27,6 +27,7 @@ dependencies {
     modCompileOnly "maven.modrinth:conjuring:1.0.24+1.19"
     modCompileOnly "maven.modrinth:sandwichable:1.3.a+1.19"
     modCompileOnly "maven.modrinth:farmers-delight:0.3.0"
+    modCompileOnly "maven.modrinth:adorn:3.6.1-fabric"
 }
 
 loom {

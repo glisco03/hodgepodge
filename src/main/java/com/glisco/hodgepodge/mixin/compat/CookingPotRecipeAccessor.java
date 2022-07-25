@@ -1,5 +1,6 @@
 package com.glisco.hodgepodge.mixin.compat;
 
+import com.glisco.hodgepodge.CompatMixin;
 import com.nhoryzon.mc.farmersdelight.recipe.CookingPotRecipe;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
@@ -8,6 +9,7 @@ import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Pseudo
+@CompatMixin(modid = "conjuring")
 @Mixin(value = CookingPotRecipe.class, remap = false)
 public interface CookingPotRecipeAccessor {
 

@@ -11,6 +11,7 @@
     "IngredientAccessor$TagEntryAccessor",
     "RecipeManagerAccessor",
     "RecipeManagerMixin",
+    "compat.AlloyForgeRecipeAccessor",
     "compat.BrewingRecipeAccessor",
     "compat.ConjuringRecipeAccessor",
     "compat.CookingPotRecipeAccessor",

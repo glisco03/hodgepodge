@@ -19,6 +19,7 @@
       "com.glisco.hodgepodge.Hodgepodge"
     ],
     "hodgepodge_plugin": [
+      "com.glisco.hodgepodge.compat.AlloyForgeryPlugin",
       "com.glisco.hodgepodge.compat.AdornPlugin",
       "com.glisco.hodgepodge.compat.ConjuringPlugin",
       "com.glisco.hodgepodge.compat.SandwichablePlugin",

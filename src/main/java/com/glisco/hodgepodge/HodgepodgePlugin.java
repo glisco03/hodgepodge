@@ -1,4 +1,4 @@
-package com.glisco.hodgepodge.compat;
+package com.glisco.hodgepodge;
 
 import java.util.List;
 

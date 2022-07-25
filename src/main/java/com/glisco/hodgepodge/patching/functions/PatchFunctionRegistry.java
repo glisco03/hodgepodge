@@ -1,7 +1,7 @@
-package com.glisco.hodgepodge.recipe_patches.functions;
+package com.glisco.hodgepodge.patching.functions;
 
 import com.glisco.hodgepodge.Hodgepodge;
-import com.glisco.hodgepodge.recipe_patches.RecipePatch;
+import com.glisco.hodgepodge.patching.RecipePatch;
 import com.google.gson.JsonElement;
 import net.minecraft.util.Identifier;
 
@@ -14,10 +14,10 @@ public class PatchFunctionRegistry {
     private static final Map<Identifier, Function<JsonElement, RecipePatch.Function>> REGISTRY = new HashMap<>();
 
     static {
-        register(Hodgepodge.id("remap"), DefaultPatchFunctions.ReplaceIngredientsFunction::fromJson);
-        register(Hodgepodge.id("set_output"), DefaultPatchFunctions.SetOutputsFunction::fromJson);
-        register(Hodgepodge.id("set_output_count"), DefaultPatchFunctions.SetOutputCountFunction::fromJson);
-        register(Hodgepodge.id("set"), DefaultPatchFunctions.SetInputsFunction::fromJson);
+        register(Hodgepodge.id("remap"), RemapIngredientsFunction::fromJson);
+        register(Hodgepodge.id("set_output"), SetOutputsFunction::fromJson);
+        register(Hodgepodge.id("set_output_count"), SetOutputCountFunction::fromJson);
+        register(Hodgepodge.id("set"), SetInputsFunction::fromJson);
     }
 
     public static void register(Identifier id, Function<JsonElement, RecipePatch.Function> functionCreator) {

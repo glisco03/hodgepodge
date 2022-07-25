@@ -1,7 +1,6 @@
 package com.glisco.hodgepodge.mixin.recipe_accessors;
 
-import com.glisco.hodgepodge.recipe_patches.manipulators.SingleInputProvider;
-import com.glisco.hodgepodge.recipe_patches.manipulators.SingleOutputProvider;
+import com.glisco.hodgepodge.patching.manipulators.marker.SimpleConversionRecipe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.AbstractCookingRecipe;
 import net.minecraft.recipe.Ingredient;
@@ -11,13 +10,17 @@ import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(AbstractCookingRecipe.class)
-public class AbstractCookingRecipeMixin implements SingleOutputProvider, SingleInputProvider {
+public class AbstractCookingRecipeMixin implements SimpleConversionRecipe {
 
     @Mutable
-    @Shadow @Final protected Ingredient input;
+    @Shadow
+    @Final
+    protected Ingredient input;
 
     @Mutable
-    @Shadow @Final protected ItemStack output;
+    @Shadow
+    @Final
+    protected ItemStack output;
 
     @Override
     public void setInput(Ingredient input) {

@@ -3,7 +3,7 @@ package com.glisco.hodgepodge.mixin;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.tag.Tag;
+import net.minecraft.tag.TagKey;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.gen.Invoker;
@@ -24,7 +24,7 @@ public interface IngredientAccessor {
     @Mixin(Ingredient.TagEntry.class)
     interface TagEntryAccessor {
         @Accessor
-        Tag<Item> getTag();
+        TagKey<Item> getTag();
     }
 
     @Mixin(Ingredient.StackEntry.class)

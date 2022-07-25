@@ -4,18 +4,21 @@
   "package": "com.glisco.hodgepodge.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "DataPackContentsMixin",
     "IngredientAccessor",
     "IngredientAccessor$StackEntryAccessor",
     "IngredientAccessor$TagEntryAccessor",
     "RecipeManagerAccessor",
     "RecipeManagerMixin",
+    "compat.ConjuringRecipeAccessor",
+    "compat.CookingPotRecipeAccessor",
+    "compat.CuttingBoardRecipeAccessor",
+    "compat.SandwichableRecipesMixin",
     "recipe_accessors.AbstractCookingRecipeMixin",
     "recipe_accessors.CuttingRecipeMixin",
     "recipe_accessors.ShapedRecipeMixin",
     "recipe_accessors.ShapelessRecipeMixin",
     "recipe_accessors.SmithingRecipeAccessor"
-  ],
-  "client": [
   ],
   "injectors": {
     "defaultRequire": 1

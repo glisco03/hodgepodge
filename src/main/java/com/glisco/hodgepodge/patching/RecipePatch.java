@@ -1,8 +1,8 @@
-package com.glisco.hodgepodge.recipe_patches;
+package com.glisco.hodgepodge.patching;
 
 import com.glisco.hodgepodge.Hodgepodge;
-import com.glisco.hodgepodge.recipe_patches.functions.PatchFunctionRegistry;
-import com.glisco.hodgepodge.recipe_patches.manipulators.RecipeManipulatorProvider;
+import com.glisco.hodgepodge.patching.functions.PatchFunctionRegistry;
+import com.glisco.hodgepodge.patching.manipulators.RecipeManipulators;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.util.Identifier;
@@ -22,7 +22,7 @@ public class RecipePatch {
         this.uuid = UUID.randomUUID();
     }
 
-    public void apply(RecipeManipulatorProvider.WrappedRecipe<?> recipe) {
+    public void apply(RecipeManipulators.WrappedRecipe<?> recipe) {
 
         for (Function function : functions) {
             if (!function.eligible(recipe)) continue;
@@ -47,9 +47,9 @@ public class RecipePatch {
 
     public interface Function {
 
-        void apply(RecipeManipulatorProvider.WrappedRecipe<?> recipe);
+        void apply(RecipeManipulators.WrappedRecipe<?> recipe);
 
-        boolean eligible(RecipeManipulatorProvider.WrappedRecipe<?> recipe);
+        boolean eligible(RecipeManipulators.WrappedRecipe<?> recipe);
 
     }
 

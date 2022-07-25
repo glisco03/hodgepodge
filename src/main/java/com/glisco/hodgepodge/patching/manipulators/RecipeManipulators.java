@@ -1,4 +1,4 @@
-package com.glisco.hodgepodge.recipe_patches.manipulators;
+package com.glisco.hodgepodge.patching.manipulators;
 
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -8,28 +8,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RecipeManipulatorProvider {
+public class RecipeManipulators {
 
     private static final Map<Class<? extends Recipe<?>>, RecipeManipulator<? extends Recipe<?>>> REGISTRY = new HashMap<>();
 
     static {
-        register(ShapedRecipe.class, new RecipeManipulators.SimpleCraftingRecipeManipulator<>());
-        register(ShapelessRecipe.class, new RecipeManipulators.SimpleCraftingRecipeManipulator<>());
-        register(SmeltingRecipe.class, new RecipeManipulators.SimpleConversionRecipeManipulator<>());
-        register(CampfireCookingRecipe.class, new RecipeManipulators.SimpleConversionRecipeManipulator<>());
-        register(SmokingRecipe.class, new RecipeManipulators.SimpleConversionRecipeManipulator<>());
-        register(BlastingRecipe.class, new RecipeManipulators.SimpleConversionRecipeManipulator<>());
-        register(SmithingRecipe.class, new RecipeManipulators.SmithingRecipeManipulator());
-        register(StonecuttingRecipe.class, new RecipeManipulators.SimpleConversionRecipeManipulator<>());
+        register(ShapedRecipe.class, new SimpleCraftingRecipeManipulator<>());
+        register(ShapelessRecipe.class, new SimpleCraftingRecipeManipulator<>());
+        register(SmeltingRecipe.class, new SimpleConversionRecipeManipulator<>());
+        register(CampfireCookingRecipe.class, new SimpleConversionRecipeManipulator<>());
+        register(SmokingRecipe.class, new SimpleConversionRecipeManipulator<>());
+        register(BlastingRecipe.class, new SimpleConversionRecipeManipulator<>());
+        register(SmithingRecipe.class, new SmithingRecipeManipulator());
+        register(StonecuttingRecipe.class, new SimpleConversionRecipeManipulator<>());
     }
 
     public static <T extends Recipe<?>> void register(Class<T> clazz, RecipeManipulator<T> manipulator) {
         REGISTRY.put(clazz, manipulator);
-    }
-
-    @SuppressWarnings("unchecked")
-    public static <R extends Recipe<?>> RecipeManipulator<R> get(R recipe) {
-        return (RecipeManipulator<R>) REGISTRY.get(recipe.getClass());
     }
 
     public static WrappedRecipe<? extends Recipe<?>> wrap(Recipe<?> recipe) {
@@ -62,6 +57,11 @@ public class RecipeManipulatorProvider {
         get(recipe).setOutput(recipe, index, stack);
     }
 
+    @SuppressWarnings("unchecked")
+    public static <R extends Recipe<?>> RecipeManipulator<R> get(R recipe) {
+        return (RecipeManipulator<R>) REGISTRY.get(recipe.getClass());
+    }
+
     public static class WrappedRecipe<R extends Recipe<?>> {
 
         private final R recipe;
@@ -73,31 +73,31 @@ public class RecipeManipulatorProvider {
         }
 
         public R getRecipe() {
-            return recipe;
+            return this.recipe;
         }
 
         public List<Ingredient> getIngredients() {
-            return manipulator.getIngredients(recipe);
+            return this.manipulator.getIngredients(recipe);
         }
 
         public void setOutput(ItemStack stack) {
-            manipulator.setOutput(recipe, stack);
+            this.manipulator.setOutput(recipe, stack);
         }
 
         public void setOutput(int index, ItemStack stack) {
-            manipulator.setOutput(recipe, index, stack);
+            this.manipulator.setOutput(recipe, index, stack);
         }
 
         public void setInput(int index, Ingredient ingredient) {
-            manipulator.setInput(recipe, index, ingredient);
+            this.manipulator.setInput(recipe, index, ingredient);
         }
 
         public void setInput(Ingredient ingredient) {
-            manipulator.setInput(recipe, ingredient);
+            this.manipulator.setInput(recipe, ingredient);
         }
 
         public boolean supports(RecipeManipulator.Operation operation) {
-            return manipulator.supports(operation);
+            return this.manipulator.supports(operation);
         }
 
     }

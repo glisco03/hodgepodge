@@ -1,4 +1,4 @@
-package com.glisco.hodgepodge.recipe_patches.manipulators;
+package com.glisco.hodgepodge.patching.manipulators;
 
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -32,9 +32,20 @@ public interface RecipeManipulator<R extends Recipe<? extends Inventory>> {
     boolean supports(Operation operation);
 
     enum Operation {
+        /**
+         * This manipulator can change a single
+         * output item stack of the recipe
+         */
         SET_OUTPUT,
-        GET_INGREDIENTS,
-        SET_INGREDIENT
+        /**
+         * This manipulator can change a single
+         * input ingredient of the recipe
+         */
+        SET_INPUT,
+        /**
+         * This manipulator can supply a list of the recipe's ingredients
+         */
+        GET_INGREDIENTS
     }
 
 }

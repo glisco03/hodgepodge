@@ -1,7 +1,6 @@
 package com.glisco.hodgepodge;
 
-import com.glisco.hodgepodge.compat.HodgepodgePlugin;
-import com.glisco.hodgepodge.recipe_patches.RecipePatchLoader;
+import com.glisco.hodgepodge.patching.RecipePatchLoader;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.loader.api.FabricLoader;

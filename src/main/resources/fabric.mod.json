@@ -19,7 +19,9 @@
       "com.glisco.hodgepodge.Hodgepodge"
     ],
     "hodgepodge_plugin": [
-      "com.glisco.hodgepodge.compat.ConjuringManipulators"
+      "com.glisco.hodgepodge.compat.ConjuringPlugin",
+      "com.glisco.hodgepodge.compat.SandwichablePlugin",
+      "com.glisco.hodgepodge.compat.FarmersDelightPlugin"
     ]
   },
   "mixins": [
@@ -27,8 +29,8 @@
   ],
   "accessWidener": "hodgepodge.accesswidener",
   "depends": {
-    "fabricloader": ">=0.11.6",
+    "fabricloader": "*",
     "fabric": "*",
-    "minecraft": "1.17.1"
+    "minecraft": ">=1.19"
   }
 }

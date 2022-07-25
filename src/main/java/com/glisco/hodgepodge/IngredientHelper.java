@@ -5,20 +5,18 @@ import com.google.gson.JsonSyntaxException;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.tag.ServerTagManagerHolder;
-import net.minecraft.tag.Tag;
+import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
+import java.util.Objects;
 import java.util.stream.Stream;
 
 public class IngredientHelper {
 
     public static Ingredient.Entry parseEntry(String descriptor) throws JsonSyntaxException {
         if (descriptor.startsWith("#")) {
-            var tag = ServerTagManagerHolder.getTagManager().getTag(Registry.ITEM_KEY, new Identifier(descriptor.substring(1)), identifier -> {
-                return new JsonSyntaxException("Unknown item tag '" + identifier + "'");
-            });
+            var tag = TagKey.of(Registry.ITEM_KEY, new Identifier(descriptor.substring(1)));
             return new Ingredient.TagEntry(tag);
         } else {
             var item = Registry.ITEM.getOrEmpty(new Identifier(descriptor)).orElseThrow(() -> new JsonSyntaxException("Unknown item '" + descriptor + "'"));
@@ -51,10 +49,10 @@ public class IngredientHelper {
     }
 
     private static boolean compareTagEntries(Ingredient.TagEntry tagEntry, Ingredient.TagEntry other) {
-        return getTagEntryTag(tagEntry) == getTagEntryTag(other);
+        return Objects.equals(getTagEntryTag(tagEntry), getTagEntryTag(other));
     }
 
-    private static Tag<Item> getTagEntryTag(Ingredient.TagEntry tagEntry) {
+    private static TagKey<Item> getTagEntryTag(Ingredient.TagEntry tagEntry) {
         return ((IngredientAccessor.TagEntryAccessor) tagEntry).getTag();
     }
 

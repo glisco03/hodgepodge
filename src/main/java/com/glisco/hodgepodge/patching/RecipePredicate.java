@@ -1,7 +1,7 @@
-package com.glisco.hodgepodge.recipe_patches;
+package com.glisco.hodgepodge.patching;
 
 import com.glisco.hodgepodge.IngredientHelper;
-import com.glisco.hodgepodge.recipe_patches.manipulators.RecipeManipulatorProvider;
+import com.glisco.hodgepodge.patching.manipulators.RecipeManipulators;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import net.minecraft.recipe.Ingredient;
@@ -13,7 +13,6 @@ import net.minecraft.util.registry.Registry;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("ClassCanBeRecord")
 public interface RecipePredicate {
 
     boolean test(Recipe<?> recipe, Identifier id);
@@ -22,7 +21,7 @@ public interface RecipePredicate {
         if (element.isJsonPrimitive() && element.getAsJsonPrimitive().isString()) {
             var predicateDescriptor = element.getAsString();
             if (predicateDescriptor.startsWith("!")) return new MatchIDRegex(predicateDescriptor.substring(1));
-            return new MatchID(new Identifier(predicateDescriptor));
+            return new MatchId(new Identifier(predicateDescriptor));
         }
 
         if (element instanceof JsonArray array) {
@@ -35,51 +34,55 @@ public interface RecipePredicate {
 
         String type = JsonHelper.getString(object, "type");
 
-        if (type.equals("match_output")) {
-            var ingredient = IngredientHelper.parse(JsonHelper.getString(object, "item"));
-            return new MatchOutputIngredient(ingredient);
-        } else if (type.equals("match_input")) {
-            var ingredient = IngredientHelper.parse(JsonHelper.getString(object, "item"));
-            return new MatchInputIngredient(ingredient);
-        } else if (type.equals("multi_match")) {
-            return MultiMatch.fromJson(JsonHelper.getArray(object, "predicates"));
-        } else if (type.equals("recipe_type")) {
-            return new MatchRecipeType(new Identifier(JsonHelper.getString(object, "id")));
-        } else {
-            return null;
-        }
-
+        return switch (type) {
+            case "match_output" -> {
+                var ingredient = IngredientHelper.parse(JsonHelper.getString(object, "item"));
+                yield new MatchOutputIngredient(ingredient);
+            }
+            case "match_input" -> {
+                var ingredient = IngredientHelper.parse(JsonHelper.getString(object, "item"));
+                yield new MatchInputIngredient(ingredient);
+            }
+            case "all" -> MultiMatch.fromJson(JsonHelper.getArray(object, "predicates"), true);
+            case "any" -> MultiMatch.fromJson(JsonHelper.getArray(object, "predicates"), false);
+            case "recipe_type" -> new MatchRecipeType(new Identifier(JsonHelper.getString(object, "id")));
+            default -> null;
+        };
     }
 
     class MultiMatch implements RecipePredicate {
 
         private final List<RecipePredicate> elements;
+        private final boolean requireAll;
 
-        private MultiMatch(List<RecipePredicate> elements) {
+        private MultiMatch(List<RecipePredicate> elements, boolean requireAll) {
             this.elements = elements;
+            this.requireAll = requireAll;
         }
 
         @Override
         public boolean test(Recipe<?> recipe, Identifier id) {
-            return elements.stream().allMatch(recipePredicate -> recipePredicate.test(recipe, id));
+            return requireAll
+                    ? elements.stream().allMatch(recipePredicate -> recipePredicate.test(recipe, id))
+                    : elements.stream().anyMatch(recipePredicate -> recipePredicate.test(recipe, id));
         }
 
-        public static MultiMatch fromJson(JsonArray json) {
+        public static MultiMatch fromJson(JsonArray json, boolean requireAll) {
             var elements = new ArrayList<RecipePredicate>();
             json.forEach(element -> elements.add(parse(element)));
-            return new MultiMatch(elements);
+            return new MultiMatch(elements, requireAll);
         }
     }
 
-    class MatchID implements RecipePredicate {
+    class MatchId implements RecipePredicate {
 
         private final Identifier target;
 
-        public MatchID(Identifier identifier) {
+        public MatchId(Identifier identifier) {
             this.target = identifier;
         }
 
-        public Identifier getTarget() {
+        public Identifier target() {
             return target;
         }
 
@@ -141,7 +144,7 @@ public interface RecipePredicate {
 
         @Override
         public boolean test(Recipe<?> recipe, Identifier id) {
-            return RecipeManipulatorProvider.eligible(recipe) && RecipeManipulatorProvider.getIngredients(recipe).stream().anyMatch(ingredient -> IngredientHelper.compareIngredients(ingredient, predicate));
+            return RecipeManipulators.eligible(recipe) && RecipeManipulators.getIngredients(recipe).stream().anyMatch(ingredient -> IngredientHelper.compareIngredients(ingredient, predicate));
         }
     }
 

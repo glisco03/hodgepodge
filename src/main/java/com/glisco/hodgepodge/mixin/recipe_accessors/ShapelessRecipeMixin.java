@@ -1,6 +1,6 @@
 package com.glisco.hodgepodge.mixin.recipe_accessors;
 
-import com.glisco.hodgepodge.recipe_patches.manipulators.SingleOutputProvider;
+import com.glisco.hodgepodge.patching.manipulators.marker.SingleOutputRecipe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.ShapelessRecipe;
 import org.spongepowered.asm.mixin.Final;
@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(ShapelessRecipe.class)
-public class ShapelessRecipeMixin implements SingleOutputProvider {
+public class ShapelessRecipeMixin implements SingleOutputRecipe {
     @Mutable
     @Shadow
     @Final

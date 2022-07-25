@@ -1,8 +1,8 @@
-package com.glisco.hodgepodge.recipe_patches;
+package com.glisco.hodgepodge.patching;
 
 import com.glisco.hodgepodge.MutableImmutableMapBuilder;
 import com.glisco.hodgepodge.mixin.RecipeManagerAccessor;
-import com.glisco.hodgepodge.recipe_patches.manipulators.RecipeManipulatorProvider;
+import com.glisco.hodgepodge.patching.manipulators.RecipeManipulators;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeManager;
@@ -25,8 +25,8 @@ public class RecipePatcher {
     private static final Map<RecipePredicate, RecipePatch> patchRules = new HashMap<>();
     private static final List<RecipePredicate> removeRules = new ArrayList<>();
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public static void apply() {
-
         LOGGER.info("### Begin patch apply stage ###");
         LOGGER.info("# {} patches to apply", patchRules.size());
         LOGGER.info("# {} removal predicates", removeRules.size());
@@ -35,7 +35,7 @@ public class RecipePatcher {
             patchRules.forEach((identifier, recipePatch) -> findRecipes(identifier, (builder, matchedId) -> {
                 Recipe<?> recipe = builder.get(matchedId);
                 try {
-                    recipePatch.apply(RecipeManipulatorProvider.wrap(recipe));
+                    recipePatch.apply(RecipeManipulators.wrap(recipe));
                 } catch (Exception e) {
                     LOGGER.warn("Applying recipe patch failed with exception. Message: {}", e.getMessage());
                 }
@@ -49,8 +49,8 @@ public class RecipePatcher {
 
         LOGGER.info("# Applying recipe map");
 
-        ((RecipeManagerAccessor) manager).setRecipes(recipeMapCache.entrySet().stream().collect(ImmutableMap.toImmutableMap(Map.Entry::getKey, (entryx) -> {
-            return ((ImmutableMap.Builder) entryx.getValue()).build();
+        ((RecipeManagerAccessor) manager).setRecipes(recipeMapCache.entrySet().stream().collect(ImmutableMap.toImmutableMap(Map.Entry::getKey, (entry) -> {
+            return ((ImmutableMap.Builder) entry.getValue()).build();
         })));
 
         LOGGER.info("### End patch apply stage ###");
@@ -62,8 +62,8 @@ public class RecipePatcher {
     }
 
     private static void findRecipes(RecipePredicate predicate, BiConsumer<MutableImmutableMapBuilder<Identifier, Recipe<?>>, Identifier> ifFound) {
-        if (predicate instanceof RecipePredicate.MatchID matchID) {
-            findRecipeByIdentifier(matchID.getTarget(), ifFound);
+        if (predicate instanceof RecipePredicate.MatchId matchID) {
+            findRecipeByIdentifier(matchID.target(), ifFound);
         } else {
             findRecipesByPredicate(predicate, ifFound);
         }
@@ -93,11 +93,11 @@ public class RecipePatcher {
         }
     }
 
-    public static void registerPatchRule(RecipePredicate recipeId, RecipePatch patch) {
+    public static void addPatchRule(RecipePredicate recipeId, RecipePatch patch) {
         patchRules.put(recipeId, patch);
     }
 
-    public static void registerRemoveRule(RecipePredicate id) {
+    public static void addRemoveRule(RecipePredicate id) {
         removeRules.add(id);
     }
 

@@ -1,4 +1,4 @@
-package com.glisco.hodgepodge.recipe_patches;
+package com.glisco.hodgepodge.patching;
 
 import com.glisco.hodgepodge.Hodgepodge;
 import com.google.gson.Gson;
@@ -20,7 +20,7 @@ import static com.glisco.hodgepodge.Hodgepodge.LOGGER;
 
 public class RecipePatchLoader extends JsonDataLoader implements IdentifiableResourceReloadListener {
 
-    private static final Gson gson = new Gson();
+    private static final Gson GSON = new Gson();
 
     public RecipePatchLoader() {
         super(new Gson(), "recipe_patches");
@@ -40,7 +40,7 @@ public class RecipePatchLoader extends JsonDataLoader implements IdentifiableRes
         if (patchesFile.exists()) {
             try {
                 LOGGER.info("# Loading patches from config directory");
-                prepared.put(Hodgepodge.id("builtin"), gson.fromJson(new FileReader(patchesFile), JsonElement.class));
+                prepared.put(Hodgepodge.id("builtin"), GSON.fromJson(new FileReader(patchesFile), JsonElement.class));
             } catch (FileNotFoundException e) {
                 LOGGER.warn("Unable to load config patch file. Exception: {}", e.getMessage());
             }
@@ -67,7 +67,7 @@ public class RecipePatchLoader extends JsonDataLoader implements IdentifiableRes
                     patchObject.remove("predicate");
 
                     var patch = RecipePatch.fromJson(patchObject);
-                    RecipePatcher.registerPatchRule(predicate, patch);
+                    RecipePatcher.addPatchRule(predicate, patch);
                 } catch (Exception e) {
                     LOGGER.warn("Caught exception while parsing patch definition. Message: {}", e.getMessage());
                 }
@@ -77,7 +77,7 @@ public class RecipePatchLoader extends JsonDataLoader implements IdentifiableRes
             var removeIds = JsonHelper.getArray(rootJson, "remove", new JsonArray());
             removeIds.forEach(idElement -> {
                 try {
-                    RecipePatcher.registerRemoveRule(RecipePredicate.parse(idElement));
+                    RecipePatcher.addRemoveRule(RecipePredicate.parse(idElement));
                 } catch (Exception e) {
                     LOGGER.warn("Caught exception while parsing removal predicate. Message: {}", e.getMessage());
                 }
@@ -87,6 +87,6 @@ public class RecipePatchLoader extends JsonDataLoader implements IdentifiableRes
 
         LOGGER.info("### End patch loading stage ###");
 
-        RecipePatcher.apply();
+//        RecipePatcher.apply();
     }
 }

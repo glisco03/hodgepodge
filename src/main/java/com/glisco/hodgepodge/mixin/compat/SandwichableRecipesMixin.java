@@ -1,5 +1,6 @@
 package com.glisco.hodgepodge.mixin.compat;
 
+import com.glisco.hodgepodge.CompatMixin;
 import com.glisco.hodgepodge.patching.manipulators.marker.SimpleConversionRecipe;
 import io.github.foundationgames.sandwichable.recipe.CuttingRecipe;
 import io.github.foundationgames.sandwichable.recipe.ToastingRecipe;
@@ -11,6 +12,7 @@ import net.minecraft.util.collection.DefaultedList;
 import org.spongepowered.asm.mixin.*;
 
 @Pseudo
+@CompatMixin(modid = "sandwichable")
 @Mixin({ToastingRecipe.class, CuttingRecipe.class})
 public abstract class SandwichableRecipesMixin implements SimpleConversionRecipe, Recipe<SimpleInventory> {
     @Shadow(remap = false)

@@ -23,7 +23,7 @@ public class RecipeManipulators {
         register(StonecuttingRecipe.class, new SimpleConversionRecipeManipulator<>());
     }
 
-    public static <T extends Recipe<?>> void register(Class<T> clazz, RecipeManipulator<T> manipulator) {
+    public static <T extends Recipe<?>> void register(Class<T> clazz, RecipeManipulator<? super T> manipulator) {
         REGISTRY.put(clazz, manipulator);
     }
 

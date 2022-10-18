@@ -158,7 +158,7 @@ public interface RecipePredicate {
 
         @Override
         public boolean test(Recipe<?> recipe, Identifier id) {
-            return Registry.RECIPE_TYPE.getId(recipe.getType()).equals(targetType);
+            return Registry.RECIPE_SERIALIZER.getId(recipe.getSerializer()).equals(targetType);
         }
     }
 
